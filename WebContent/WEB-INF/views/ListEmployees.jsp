@@ -36,10 +36,14 @@
                 <th>Select</th>
             </tr>
             <%
-            IEmployeeService iEmployeeService = new EmployeeServiceImpl();
-			ArrayList<Employee> arrayList = iEmployeeService.getEmployees();
-			
-			for(Employee employee : arrayList){
+			ArrayList<Employee> arrayList = (ArrayList<Employee>) request.getAttribute("employees");
+			if (arrayList == null) {
+				IEmployeeService iEmployeeService = new EmployeeServiceImpl();
+				arrayList = iEmployeeService.getEmployees();
+			}
+
+			if (arrayList != null) {
+				for(Employee employee : arrayList){
 			%>
 			 <tr>
 				<td> <%=employee.getEmployeeID() %> </td>

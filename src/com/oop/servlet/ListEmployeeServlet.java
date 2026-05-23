@@ -1,6 +1,7 @@
 package com.oop.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,6 +36,12 @@ public class ListEmployeeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html");
+		IEmployeeService iEmployeeService = new EmployeeServiceImpl();
+		ArrayList<Employee> arrayList = iEmployeeService.getEmployees();
+		request.setAttribute("employees", arrayList);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/views/ListEmployees.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	/**
@@ -44,9 +51,8 @@ public class ListEmployeeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/views/ListEmployees.jsp");
-		dispatcher.forward(request, response);
+		// Delegate to doGet to populate employees and render
+		doGet(request, response);
 	}
 
 }
